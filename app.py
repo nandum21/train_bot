@@ -14,6 +14,11 @@ ROUTES = {
         "train1": "Catch Towards Miyapur",
         "train2": "Catch Towards Nagole"
     },
+    ("tarnaka", "jntu"): {
+        "interchange": "Ameerpet",
+        "train1": "Catch Towards RaiDurg",
+        "train2": "Catch Towards Miyapur"
+    },
     ("secunderabad", "falaknuma"): {
         "interchange": "Direct",
         "train1": "MMTS Secunderabad – Falaknuma"
