@@ -9,6 +9,11 @@ ROUTES = {
         "train1": "MMTS Secunderabad – Falaknuma",
         "train2": "MMTS Lingampally – Medchal"
     },
+    ("irrummanzil", "tarnaka"): {
+        "interchange": "Ameerpet",
+        "train1": "Catch Towards Miyapur",
+        "train2": "Catch Towards Nagole"
+    },
     ("secunderabad", "falaknuma"): {
         "interchange": "Direct",
         "train1": "MMTS Secunderabad – Falaknuma"
