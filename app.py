@@ -67,7 +67,7 @@ LINES = {
 # -----------------------------
 # 1. STATIONS (number-based)
 # -----------------------------
-STATIONS = {
+STATIONS1 = {
     1: {"name": "Miyapur", "lines": ["RED"]},
     2: {"name": "JNTU", "lines": ["RED"]},
     3: {"name": "KPHB", "lines": ["RED"]},
@@ -111,6 +111,7 @@ STATION_LINES = {}
 for line, stations in LINES.items():
     for st in stations:
         STATION_LINES.setdefault(st, []).append(line)
+    STATIONS = STATION_LINES
 
 # -----------------------------
 # 4. HELPERS
