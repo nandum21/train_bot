@@ -80,7 +80,7 @@ def station_menu():
     text = "🚉 *Select Stations*\n\n"
     for num, name in STATIONS.items():
         text += f"{num}. {name}\n"
-    text += "\nReply like:\n*1 to 50*"
+    text += "\nReply like:\n* src_num to dest_num(1 to 50)*"
     return text
 
 
