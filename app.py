@@ -120,7 +120,9 @@ def get_interchange(l1, l2):
 # =====================================================
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_bot():
-    msg = request.form.get("Body", "").strip().lower()
+    msg = request.values.get("Body", "")
+    msg = msg.strip().lower()
+
     resp = MessagingResponse()
 
     if msg in ["hi", "hello", "menu", "start"]:
