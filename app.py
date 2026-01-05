@@ -185,6 +185,6 @@ To: {dest}
 # 7. RUN
 # =====================================================
 if __name__ == "__main__":
-    print("✅ Metro bot started")
+    print("Metro bot started")
     print("Total stations:", len(STATIONS))
     app.run(debug=True)
