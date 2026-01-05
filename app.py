@@ -41,16 +41,7 @@ LINES = {
 }
 
 # =====================================================
-# 2. INTERCHANGES (ONLY THESE)
-# =====================================================
-INTERCHANGES = {
-    ("RED", "BLUE"): "Ameerpet",
-    ("BLUE", "GREEN"): "Parade Ground",
-    ("RED", "GREEN"): "MGBS"
-}
-
-# =====================================================
-# 3. LINE CONNECTIVITY GRAPH (MAX 2 INTERCHANGES)
+# 2. LINE CONNECTIVITY GRAPH (MAX 2 INTERCHANGES)
 # =====================================================
 LINE_GRAPH = {
     "RED": ["BLUE", "GREEN"],
@@ -59,10 +50,11 @@ LINE_GRAPH = {
 }
 
 # =====================================================
-# 4. AUTO-GENERATE STATIONS + NUMBERS
+# 3. AUTO-DETECT STATIONS, LINES & INTERCHANGES
 # =====================================================
 STATIONS = {}
 STATION_LINES = {}
+INTERCHANGES = {}
 
 station_id = 1
 for line, stations in LINES.items():
@@ -73,24 +65,32 @@ for line, stations in LINES.items():
             station_id += 1
         STATION_LINES[st].append(line)
 
-# Reverse lookup
-STATION_NUMBERS = {v: k for k, v in STATIONS.items()}
+# Build interchange map automatically
+for station, lines in STATION_LINES.items():
+    if len(lines) > 1:
+        for i in range(len(lines)):
+            for j in range(i + 1, len(lines)):
+                INTERCHANGES[(lines[i], lines[j])] = station
+                INTERCHANGES[(lines[j], lines[i])] = station
 
 # =====================================================
-# 5. HELPERS
+# 4. HELPERS
 # =====================================================
 def station_menu():
     text = "🚉 *Select Stations*\n\n"
     for num, name in STATIONS.items():
         text += f"{num}. {name}\n"
-    text += "\nReply like:\n src_num to dest_num(1 to 21)"
+    text += "\nReply like:\n1 to 25"
     return text
 
 
 def get_direction(line, src, dest):
     stations = LINES[line]
-    return f"Towards {stations[-1]}" if stations.index(src) < stations.index(dest) \
+    return (
+        f"Towards {stations[-1]}"
+        if stations.index(src) < stations.index(dest)
         else f"Towards {stations[0]}"
+    )
 
 
 def find_line_path(src_lines, dest_lines):
@@ -116,10 +116,10 @@ def find_line_path(src_lines, dest_lines):
 
 
 def get_interchange(l1, l2):
-    return INTERCHANGES.get((l1, l2)) or INTERCHANGES.get((l2, l1))
+    return INTERCHANGES.get((l1, l2))
 
 # =====================================================
-# 6. WHATSAPP BOT
+# 5. WHATSAPP BOT
 # =====================================================
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_bot():
@@ -183,8 +183,7 @@ To: {dest}
     return str(resp)
 
 # =====================================================
-# 7. RUN
+# 6. RUN
 # =====================================================
 if __name__ == "__main__":
     app.run(debug=True)
-
