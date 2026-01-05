@@ -23,13 +23,13 @@ LINES = {
         "Jubilee Hills Road No. 5", "Yousufguda",
         "Madhura Nagar", "Ameerpet", "Begumpet",
         "Prakash Nagar", "Rasoolpura", "Paradise",
-        "JBS Parade Ground", "Secunderabad East", "Mettuguda",
+        "Parade Ground", "Secunderabad East", "Mettuguda",
         "Tarnaka", "Habsiguda", "NGRI",
         "Stadium", "Uppal", "Nagole"
     ],
 
     "GREEN": [
-        "JBS Parade Ground",
+        "Parade Ground",
         "Secunderabad West (Gandhi Hospital)",
         "Musheerabad",
         "RTC X Roads",
@@ -41,7 +41,16 @@ LINES = {
 }
 
 # =====================================================
-# 2. LINE CONNECTIVITY GRAPH (MAX 2 INTERCHANGES)
+# 2. INTERCHANGES (ONLY THESE)
+# =====================================================
+INTERCHANGES = {
+    ("RED", "BLUE"): "Ameerpet",
+    ("BLUE", "GREEN"): "Parade Ground",
+    ("RED", "GREEN"): "MGBS"
+}
+
+# =====================================================
+# 3. LINE CONNECTIVITY (MAX 2 INTERCHANGES)
 # =====================================================
 LINE_GRAPH = {
     "RED": ["BLUE", "GREEN"],
@@ -50,11 +59,10 @@ LINE_GRAPH = {
 }
 
 # =====================================================
-# 3. AUTO-DETECT STATIONS, LINES & INTERCHANGES
+# 4. AUTO-GENERATE STATION NUMBERS
 # =====================================================
 STATIONS = {}
 STATION_LINES = {}
-INTERCHANGES = {}
 
 station_id = 1
 for line, stations in LINES.items():
@@ -65,32 +73,21 @@ for line, stations in LINES.items():
             station_id += 1
         STATION_LINES[st].append(line)
 
-# Build interchange map automatically
-for station, lines in STATION_LINES.items():
-    if len(lines) > 1:
-        for i in range(len(lines)):
-            for j in range(i + 1, len(lines)):
-                INTERCHANGES[(lines[i], lines[j])] = station
-                INTERCHANGES[(lines[j], lines[i])] = station
-
 # =====================================================
-# 4. HELPERS
+# 5. HELPERS
 # =====================================================
 def station_menu():
     text = "🚉 *Select Stations*\n\n"
     for num, name in STATIONS.items():
         text += f"{num}. {name}\n"
-    text += "\nReply like:\n1 to 25"
+    text += "\nReply like:\n*1 to 50*"
     return text
 
 
 def get_direction(line, src, dest):
     stations = LINES[line]
-    return (
-        f"Towards {stations[-1]}"
-        if stations.index(src) < stations.index(dest)
+    return f"Towards {stations[-1]}" if stations.index(src) < stations.index(dest) \
         else f"Towards {stations[0]}"
-    )
 
 
 def find_line_path(src_lines, dest_lines):
@@ -116,10 +113,10 @@ def find_line_path(src_lines, dest_lines):
 
 
 def get_interchange(l1, l2):
-    return INTERCHANGES.get((l1, l2))
+    return INTERCHANGES.get((l1, l2)) or INTERCHANGES.get((l2, l1))
 
 # =====================================================
-# 5. WHATSAPP BOT
+# 6. WHATSAPP BOT
 # =====================================================
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp_bot():
@@ -135,21 +132,12 @@ def whatsapp_bot():
         return str(resp)
 
     try:
-        src_no, dest_no = [int(x.strip()) for x in msg.split("to")]
+        src_no, dest_no = map(int, msg.split("to"))
+        src = STATIONS[src_no]
+        dest = STATIONS[dest_no]
     except:
-        resp.message("❌ Format error. Use: 1 to 25")
+        resp.message("❌ Invalid station numbers\nType *menu*")
         return str(resp)
-
-    if src_no not in STATIONS or dest_no not in STATIONS:
-        resp.message(
-            f"❌ Station number out of range.\n"
-            f"Valid range: 1 to {max(STATIONS.keys())}"
-        )
-        return str(resp)
-
-    src = STATIONS[src_no]
-    dest = STATIONS[dest_no]
-
 
     src_lines = STATION_LINES[src]
     dest_lines = STATION_LINES[dest]
@@ -192,7 +180,9 @@ To: {dest}
     return str(resp)
 
 # =====================================================
-# 6. RUN
+# 7. RUN
 # =====================================================
 if __name__ == "__main__":
+    print("✅ Metro bot started")
+    print("Total stations:", len(STATIONS))
     app.run(debug=True)
