@@ -23,7 +23,7 @@ LINES = {
         "Jubilee Hills Road No. 5", "Yousufguda",
         "Madhura Nagar", "Ameerpet", "Begumpet",
         "Prakash Nagar", "Rasoolpura", "Paradise",
-        "Parade Ground", "Secunderabad East", "Mettuguda",
+        "JBS Parade Ground", "Secunderabad East", "Mettuguda",
         "Tarnaka", "Habsiguda", "NGRI",
         "Stadium", "Uppal", "Nagole"
     ],
@@ -36,7 +36,7 @@ LINES = {
         "Chikkadpally",
         "Narayanguda",
         "Sultan Bazaar",
-        "MG Bus Station (MGBS)"
+        "MGBS"
     ]
 }
 
