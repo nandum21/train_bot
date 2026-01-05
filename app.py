@@ -23,13 +23,13 @@ LINES = {
         "Jubilee Hills Road No. 5", "Yousufguda",
         "Madhura Nagar", "Ameerpet", "Begumpet",
         "Prakash Nagar", "Rasoolpura", "Paradise",
-        "Parade Ground", "Secunderabad East", "Mettuguda",
+        "JBS", "Secunderabad East", "Mettuguda",
         "Tarnaka", "Habsiguda", "NGRI",
         "Stadium", "Uppal", "Nagole"
     ],
 
     "GREEN": [
-        "Parade Ground",
+        "JBS",
         "Secunderabad West (Gandhi Hospital)",
         "Musheerabad",
         "RTC X Roads",
@@ -45,7 +45,7 @@ LINES = {
 # =====================================================
 INTERCHANGES = {
     ("RED", "BLUE"): "Ameerpet",
-    ("BLUE", "GREEN"): "Parade Ground",
+    ("BLUE", "GREEN"): "JBS",
     ("RED", "GREEN"): "MGBS"
 }
 
