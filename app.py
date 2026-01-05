@@ -135,12 +135,21 @@ def whatsapp_bot():
         return str(resp)
 
     try:
-        src_no, dest_no = map(int, msg.split("to"))
-        src = STATIONS[src_no]
-        dest = STATIONS[dest_no]
+        src_no, dest_no = [int(x.strip()) for x in msg.split("to")]
     except:
-        resp.message("❌ Invalid station numbers\nType *menu*")
+        resp.message("❌ Format error. Use: 1 to 25")
         return str(resp)
+
+    if src_no not in STATIONS or dest_no not in STATIONS:
+        resp.message(
+            f"❌ Station number out of range.\n"
+            f"Valid range: 1 to {max(STATIONS.keys())}"
+        )
+        return str(resp)
+
+    src = STATIONS[src_no]
+    dest = STATIONS[dest_no]
+
 
     src_lines = STATION_LINES[src]
     dest_lines = STATION_LINES[dest]
